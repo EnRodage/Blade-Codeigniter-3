@@ -1,11 +1,9 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-use Philo\Blade\Blade;
-
 class MY_Controller extends CI_Controller
 {
-    protected $blade;
+  
     protected $views = APPPATH . '/views';
     protected  $cache = APPPATH . '/cache';
     public $dataView = array();
@@ -13,7 +11,6 @@ class MY_Controller extends CI_Controller
     public function __construct()
     {
         parent::__construct();
-
         
         if($this->uri->segment(1)=='admin')
         {
@@ -32,13 +29,7 @@ class MY_Controller extends CI_Controller
                 $this->dataView['user'] = $this->session->userdata('user');
             }
         }
-        
-        $this->blade = new Blade($this->views, $this->cache);
-        $this->blade->view()->composer("*", function($view)
-        {
-            $view->with("session", $this->session);
-            $view->with("uri", $this->uri);
-        });
+        $this->dataView['currentController'] = $this->uri->segment(1);
     }
     public function bladeView($page, $data=NULL)
     {
